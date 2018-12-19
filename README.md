@@ -35,7 +35,7 @@ With the correct credentials submitted you will be redirected to the board:
  
  As you did not push any monitoring data yet, the board is empty.
  
- To fill the board you make `post` requests against the `http://localhost/api/monitoring/data` url.
+ To fill the board you make `post` requests against the [http://localhost/api/monitoring/data](http://localhost/api/monitoring/data) url.
  
  For Example: 
  
