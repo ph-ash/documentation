@@ -74,7 +74,7 @@ As last part of your request you provide the actual monitoring data in json-form
 
 If you receive an empty Response with a HTTP code of 201, your monitoring data was successfully accepted by the [server](https://github.com/ph-ash/server)
 and should be displayed on the board.
-There is an api sandbox located under `https://localhost/api/doc` which you can use for testing. When opening the
+There is an api sandbox located under [https://localhost/api/doc](https://localhost/api/doc) which you can use for testing. When opening the
 url you will see the api documentation:
 
 ![api_sandbox_documentation](assets/phash_usage_api_doc_1.png)
