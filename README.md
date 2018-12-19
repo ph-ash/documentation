@@ -26,12 +26,12 @@ TBD
 After successful installation the [board](https://github.com/ph-ash/board) is reachable via the `https://localhost/` url in your Browser.
 Simply type it into the address bar and hit _enter_. Now you see the login screen popping up:
 
-![Login](assets\phash_usage_board_login.png)
+![Login](assets/phash_usage_board_login.png)
 
 Enter the credentials you configured in the [Installation](#installation) chapter.
 With the correct credentials submitted you will be redirected to the [board](https://github.com/ph-ash/board):
 
-![Empty Board](assets\phash_usage_board_1.png)
+![Empty Board](assets/phash_usage_board_1.png)
  
  As you did not push any monitoring data yet, the [board](https://github.com/ph-ash/board) is empty.
  
@@ -77,22 +77,22 @@ and should be displayed on the [board](https://github.com/ph-ash/board).
 There is an api sandbox located under `https://localhost/api/doc` which you can use for testing. When opening the
 url you will see the api documentation:
 
-![api_sandbox_documentation](assets\phash_usage_api_doc_1.png)
+![api_sandbox_documentation](assets/phash_usage_api_doc_1.png)
 
 Authorize yourself by clicking the _Authorize_ Button in the upper right corner.
 Simply fill in the Bearer type with your configured token which should look like:
 
-![api_sandbox_authorization](assets\phash_usage_api_doc_2.png)
+![api_sandbox_authorization](assets/phash_usage_api_doc_2.png)
 
 Next open the Monitoring tab and click on _Try it out_ to switch to the interactive 
 sandbox. Here you may edit the data you want to send and execute the request.
 
-![api_sandbox_authorization](assets\phash_usage_api_doc_4.png)
+![api_sandbox_authorization](assets/phash_usage_api_doc_4.png)
 
 After submitting a few monitorings look at your board, you will see your posted monitorings as tiles with
 different colors which represent the statuses mentioned earlier.
 
-![api_sandbox_authorization](assets\phash_usage_board_2.png)
+![api_sandbox_authorization](assets/phash_usage_board_2.png)
 
 Every time you reload the [board](https://github.com/ph-ash/board), 
 all stored monitorings will be resent from the [server](https://github.com/ph-ash/server) to the [board](https://github.com/ph-ash/board), so you
