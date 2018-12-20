@@ -4,7 +4,7 @@ PHP monitoring dashboard documentation
 
 ## What is Phash?
 
-Phash is a set applications to provide a PHP based monitoring dashboard, monitoring data gathering and distribution.
+Phash is a set of applications to provide a PHP based monitoring dashboard, monitoring data gathering and distribution.
 
 * [ph-ash/board](https://github.com/ph-ash/board)
 
