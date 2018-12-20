@@ -83,11 +83,9 @@ You can and should configure several application variables by adding `environmen
 
 ### board
 
-* `BOARD_LOGIN_PASSWORD` (default value: `'$argon2i$v=19$m=1024,t=2,p=2$TUVUYWk3SVpMekVTOWJaaQ$/X8MSzzLEHJHfBllXjbw25sBA5pj7xHDhojjHwoqOmQ'`)
+* `BOARD_LOGIN_PASSWORD` (default value: `phash-board`)
 
-    The Argon2i encoded password of the frontend user named `phash-board`. The default value decodes to `phash-board`. You can easily generate a new
-    password [online](https://argon2-generator.com/) - keep in mind to replace `$` by `$$` and enclose everything in `'` to not break the docker-compose YAML format.
-    It is **highly recommended** to change this value for production systems.
+    The password of the frontend user named `phash-board`. It is **highly recommended** to change this value for production systems.
 
 * `PUBLIC_HOSTNAME` (default value: `localhost`)
 
@@ -109,7 +107,7 @@ Simply type it into the address bar and hit _enter_. Now you see the login scree
 
 ![Login](assets/phash_usage_board_login.png)
 
-Enter the credentials you configured in the [Configuration](#configuration) chapter.
+Enter the credentials you configured in the [Configuration](#configuration) chapter (username: `phash-board`).
 With the correct credentials submitted you will be redirected to the board:
 
 ![Filled_board](assets/phash_usage_board_1.png)
