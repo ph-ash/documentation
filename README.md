@@ -153,6 +153,8 @@ If you would push monitorings with all of the above tree paths, the resulting tr
 
 The tree map display allows you to easily navigate this tree by simply clicking in the node to descend and click on the breadcrumb on the top to ascend the tree.
 
+Additionally, you will notice the URL changing when you navigate the tree. You can use these URLs to directly jump into that subtree when initially opening the dashboard, which can be useful for screeners.
+
 Please keep in mind, that you should *not* declare a tree path both as branch node and leaf node. This will mess up the tree aggregation and yields unpredictable results.
 
 ## Issues
