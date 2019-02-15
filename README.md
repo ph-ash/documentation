@@ -46,7 +46,7 @@ The vision of this project is to provide an out-of-the box working, highly custo
 
 You can simply download the [docker-compose.yaml](https://raw.githubusercontent.com/ph-ash/documentation/master/docker-compose.yaml) and run
 
-    docker-compose up
+    docker-compose up -d
 
 to start a local setup listening on [http://localhost](http://localhost).
 
