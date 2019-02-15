@@ -5,11 +5,15 @@ services:
     image: phashboard/board:1
     volumes:
       - static-assets-board:/var/www/html/public
+    logging:
+      driver: none
 
   server:
     image: phashboard/server:1
     volumes:
       - static-assets-server:/var/www/html/public
+    logging:
+      driver: none
 
   mongo:
     image: mongo:4
@@ -22,6 +26,8 @@ services:
     volumes:
       - static-assets-board:/var/www/html/board
       - static-assets-server:/var/www/html/server
+    logging:
+      driver: none
 
 volumes:
   static-assets-board:
