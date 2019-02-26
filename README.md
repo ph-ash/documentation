@@ -85,7 +85,7 @@ You can and should configure several application variables by adding `environmen
 
 ## Usage
 
-### Push data to the board
+### Push single data to the board
 
 #### Method, endpoint and headers
 
@@ -131,6 +131,66 @@ A complete example request with [curl](https://curl.haxx.se/) looks like:
 If you receive an empty Response with a HTTP code of `201`, your monitoring data was successfully accepted by the server and should be displayed on the board.
 Every time you reload the board, all stored monitorings will be resent from the server to the board, so you do not have to push them again.
 
+### Push bulk data to the board
+
+#### Method, endpoint and headers
+
+Data collectors can `POST` data in JSON format to the board's endpoint `http://<PUBLIC_HOSTNAME>/api/monitoring/data/bulk`.
+
+They need to authenticate themselves with a `Bearer` token sent in the `Authorization` header.
+
+The `Content-Type` and `Accept` headers should be set to `application/json`.
+
+#### Payload format
+
+The payload needs to be a JSON object with an array called `monitoringData` of objects with given keys:
+
+| key | type | description |
+| --- | --- | --- |
+| `id` | string | is the identifier for the tile on the board |
+| `status` | `enum` (`ok`, `error`) | defines in which color the tile will appear initially (green or red) |
+| `payload` | `string` | is the message which will be displayed in the tile hover |
+| `idleTimeoutInSeconds` | `integer` | defines after how many seconds after `date` `ok` tile will change its status to `idle` (`error` tiles are not affected). You should choose this value based on your data push interval. |
+| `priority` | `integer` | defines the display size of the tile on the board: the higher the _priority_, the bigger the tile in relation to other tiles |
+| `date` | `date` | defines when the monitoring data was created. Serves as starting point of the `idle` calculation. |
+| `path` | `string` | optionally defines a tree path to place the monitoring at. Tree paths are formatted like `rootName.branchName.leafName`, see [tree paths](#tree-layout) for more information. |
+
+Example payload:
+``` 
+    {
+        "monitoringData": [
+            {
+             "id": "My first Monitoringdata",
+             "status": "ok",
+             "payload": "This is my payload",
+             "idleTimeoutInSeconds": 60,
+             "priority": 1,
+             "date": "2019-02-26T20:16:30.641Z",
+             "path": "monitoring.team_phash.database"
+            },
+            {
+            "id": "My second Monitoringdata",
+            "status": "error",
+            "payload": "This is an Errormessage",
+            "idleTimeoutInSeconds": 60,
+            "priority": 5,
+            "date": "2019-02-26T20:16:30.641Z",
+            "path": "monitoring.team_phash.database"
+            }
+        ]
+    }
+```
+A complete example request with [curl](https://curl.haxx.se/) looks like:
+
+    curl -sS -D - -X POST "http://localhost/api/monitoring/data" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer pleaseChooseASecretTokenForThePublicAPI" \
+    -H "Content-Type: application/json" \
+    -d "{ \"monitoringData\": [ { \"id\": \"My first Monitoringdata\", \"status\": \"ok\", \"payload\": \"This is my payload\", \"idleTimeoutInSeconds\": 60, \"priority\": 1, \"date\": \"2019-02-26T20:16:30.641Z\", \"path\": \"monitoring.team_phash.database\" }. { \"id\": \"My second Monitoringdata\", \"status\": \"error\", \"payload\": \"This is an Errormessage\", \"idleTimeoutInSeconds\": 60, \"priority\": 5, \"date\": \"2019-02-26T20:16:30.641Z\", \"path\": \"monitoring.team_phash.database\" } ] }"
+
+If you receive an empty Response with a HTTP code of `201`, your monitoring data was successfully accepted by the server and should be displayed on the board.
+Every time you reload the board, all stored monitorings will be resent from the server to the board, so you do not have to push them again.
+
 ### Tree layout
 
 Your monitoring data can be displayed as a tree map. To enable this feature, you need to push the optional `path` property and fill it with a valid tree path.
@@ -155,7 +215,7 @@ The tree map display allows you to easily navigate this tree by simply clicking 
 
 Additionally, you will notice the URL changing when you navigate the tree. You can use these URLs to directly jump into that subtree when initially opening the dashboard, which can be useful for screeners.
 
-Please keep in mind, that you should *not* declare a tree path both as branch node and leaf node. This will mess up the tree aggregation and yields unpredictable results.
+Please keep in mind, that you should *not* declare a tree path both as branch node and leaf node. Pushing data into a branch node will result in validation errors and not be processed.
 
 ## Issues
 
