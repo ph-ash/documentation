@@ -215,7 +215,7 @@ The tree map display allows you to easily navigate this tree by simply clicking 
 
 Additionally, you will notice the URL changing when you navigate the tree. You can use these URLs to directly jump into that subtree when initially opening the dashboard, which can be useful for screeners.
 
-Please keep in mind, that you should *not* declare a tree path both as branch node and leaf node. Pushing data into a branch node will result in validation errors and not be processed.
+Please keep in mind, that you should *not* declare a tree path both as branch node and leaf node. Pushing data into a branch node will result in validation errors and will not be processed.
 
 ## Issues
 
