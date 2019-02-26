@@ -145,15 +145,7 @@ The `Content-Type` and `Accept` headers should be set to `application/json`.
 
 The payload needs to be a JSON object with an array called `monitoringData` of objects with given keys:
 
-| key | type | description |
-| --- | --- | --- |
-| `id` | string | is the identifier for the tile on the board |
-| `status` | `enum` (`ok`, `error`) | defines in which color the tile will appear initially (green or red) |
-| `payload` | `string` | is the message which will be displayed in the tile hover |
-| `idleTimeoutInSeconds` | `integer` | defines after how many seconds after `date` `ok` tile will change its status to `idle` (`error` tiles are not affected). You should choose this value based on your data push interval. |
-| `priority` | `integer` | defines the display size of the tile on the board: the higher the _priority_, the bigger the tile in relation to other tiles |
-| `date` | `date` | defines when the monitoring data was created. Serves as starting point of the `idle` calculation. |
-| `path` | `string` | optionally defines a tree path to place the monitoring at. Tree paths are formatted like `rootName.branchName.leafName`, see [tree paths](#tree-layout) for more information. |
+See [Payload format](#payload-format)
 
 Example payload:
 ``` 
@@ -186,10 +178,14 @@ A complete example request with [curl](https://curl.haxx.se/) looks like:
     -H "Accept: application/json" \
     -H "Authorization: Bearer pleaseChooseASecretTokenForThePublicAPI" \
     -H "Content-Type: application/json" \
-    -d "{ \"monitoringData\": [ { \"id\": \"My first Monitoringdata\", \"status\": \"ok\", \"payload\": \"This is my payload\", \"idleTimeoutInSeconds\": 60, \"priority\": 1, \"date\": \"2019-02-26T20:16:30.641Z\", \"path\": \"monitoring.team_phash.database\" }. { \"id\": \"My second Monitoringdata\", \"status\": \"error\", \"payload\": \"This is an Errormessage\", \"idleTimeoutInSeconds\": 60, \"priority\": 5, \"date\": \"2019-02-26T20:16:30.641Z\", \"path\": \"monitoring.team_phash.database\" } ] }"
+    -d "{ \"monitoringData\": [ { \"id\": \"My first Monitoringdata\", \"status\": \"ok\", \"payload\": \"This is my payload\", \"idleTimeoutInSeconds\": 60, \"priority\": 1, \"date\": \"2019-02-26T20:16:30.641Z\", \"path\": \"monitoring.team_phash.database\" }, { \"id\": \"My second Monitoringdata\", \"status\": \"error\", \"payload\": \"This is an Errormessage\", \"idleTimeoutInSeconds\": 60, \"priority\": 5, \"date\": \"2019-02-26T20:16:30.641Z\", \"path\": \"monitoring.team_phash.database\" } ] }"
 
 If you receive an empty Response with a HTTP code of `201`, your monitoring data was successfully accepted by the server and should be displayed on the board.
 Every time you reload the board, all stored monitorings will be resent from the server to the board, so you do not have to push them again.
+
+If you receive a Response with a HTTP code of `400` you will get a list of validation errors in the Response-Content. All 
+data without errors will be processed successfully, while the ones with validation errors will not be processed until you resend 
+them and they pass validation. 
 
 ### Tree layout
 
