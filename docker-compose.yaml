@@ -17,6 +17,8 @@ services:
 
   mongo:
     image: mongo:4
+    volumes:
+      - ./mongodata:/data/db
 
   nginx:
     image: phashboard/nginx:1
