@@ -78,7 +78,7 @@ You can and should configure several application variables by adding `environmen
 | --- | --- | --- |
 | `APP_SECRET` | `73adb4285b84053d174db4b65ffa8ff4bfa24e1b` | A secret for generating CSRF tokens. It is **highly recommended** to change this value for production systems. |
 | `BOARD_LOGIN_PASSWORD` | `phash-board` | The password of the frontend user named `phash-board`. It is **highly recommended** to change this value for production systems. |
-| `PUBLIC_WEBSOCKET_URL` | `ws://localhost:8080` | The public websocket url, necessary for the internal WAMP connection. It is *necessary* to change this value for production systems if you want to run this on a dedicated server. |
+| `PUBLIC_WEBSOCKET_URL` | `ws://localhost/websocket` | The public websocket url, necessary for the internal WAMP connection. It is *necessary* to change this value for production systems if you want to run this on a dedicated server. |
 | `WAMP_INTERNAL_HOSTNAME` | `board` | The internal hostname the websocket will listen for trusted connections from the server. This should always match the service name used in the `docker-compose.yaml`. |
 | `WAMP_PASSWORD` | `pleaseChooseASecretPasswordForTheWebsocket` | WAMP password for connections from browsers. It is **highly recommended** to change this value for production systems. |
 | `WAMP_REALM` | `realm1` | The WAMP realm to use for communication. Needs to match the [server setting](#server). |
