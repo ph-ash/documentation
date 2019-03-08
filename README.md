@@ -108,8 +108,8 @@ The payload needs to be a JSON object with a given set of keys:
 | `priority` | `integer` | defines the display size of the tile on the board: the higher the _priority_, the bigger the tile in relation to other tiles |
 | `date` | `date` | defines when the monitoring data was created. Serves as starting point of the `idle` calculation. |
 | `path` | `string` | optionally defines a tree path to place the monitoring at. Tree paths are formatted like `rootName.branchName.leafName`, see [tree paths](#tree-layout) for more information. |
-| `tileExpansionIntervalCount` | `integer` | optionally defines the number of `idleTimeoutInSeconds` intervals after an `error` tile will grow by `tileExpansionGrowthExpression`. Defaults internally to `1`, see [error tile growth](#error-tile-growth) for more information. |
-| `tileExpansionGrowthExpression` | `string` | optionally defines a growth expression for the growth of `error` tiles. Allowed formats are `+ <positive integer>` or `* <positive integer>`. Defaults internally to `+ 1`, see [error tile growth](#error-tile-growth) for more information. |
+| `tileExpansionIntervalCount` | `integer` | optionally defines the number of times `idleTimeoutInSeconds` has to be elapsed after which an `error` tile will grow by `tileExpansionGrowthExpression`. Defaults to `1` if not provided. See [error tile growth](#error-tile-growth) for more information. |
+| `tileExpansionGrowthExpression` | `string` | optionally defines an expression for the growth of `error` tiles. Allowed formats are `+ <positive integer>` and `* <positive integer>`. Defaults to `+ 1`if not provided. See [error tile growth](#error-tile-growth) for more information. |
 
 Example payload:
 
@@ -217,15 +217,17 @@ Please keep in mind, that you should *not* declare a tree path both as branch no
 
 ### Error tile growth
 
-From our experience, low prioritized monitorings usually won't be fixed unless there is nothing else to do, and this happens not often. Therefore, we thought of a way to bring these monitorings to our attention.
+From our experience, low prioritized monitorings usually won't be fixed unless there is nothing else to do. And let's be honest, this does not happen very often.
 
-Every tile, which at some point switches to `error` will grow over time in priority (and on screen), so that it can compete with high priority monitorings. Each tile will grow each
+Every `error`tile will grow over time in priority (and on screen), so that it can compete with high priority monitorings. Each `error` tile will grow each
 
     <tileExpansionIntervalCount> * <idleTimeoutInSeconds> seconds
 
 by
     
     <current priority> <tileExpansionGrowthExpression>
+    
+and will reset to the original priority as soon as the tile enters the status `ok`.
 
 Examples:
 * you pushed a monitoring with `idleTimeoutInSeconds = 60` and omitted the optional values: your error tile will grow each `60` seconds by `1`
