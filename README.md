@@ -108,6 +108,8 @@ The payload needs to be a JSON object with a given set of keys:
 | `priority` | `integer` | defines the display size of the tile on the board: the higher the _priority_, the bigger the tile in relation to other tiles |
 | `date` | `date` | defines when the monitoring data was created. Serves as starting point of the `idle` calculation. |
 | `path` | `string` | optionally defines a tree path to place the monitoring at. Tree paths are formatted like `rootName.branchName.leafName`, see [tree paths](#tree-layout) for more information. |
+| `tileExpansionIntervalCount` | `integer` | optionally defines the number of times `idleTimeoutInSeconds` has to be elapsed after which an `error` tile will grow by `tileExpansionGrowthExpression`. Defaults to `1` if not provided. See [error tile growth](#error-tile-growth) for more information. |
+| `tileExpansionGrowthExpression` | `string` | optionally defines an expression for the growth of `error` tiles. Allowed formats are `+ <positive integer>` and `* <positive integer>`. Defaults to `+ 1`if not provided. See [error tile growth](#error-tile-growth) for more information. |
 
 Example payload:
 
@@ -212,6 +214,24 @@ The tree map display allows you to easily navigate this tree by simply clicking 
 Additionally, you will notice the URL changing when you navigate the tree. You can use these URLs to directly jump into that subtree when initially opening the dashboard, which can be useful for screeners.
 
 Please keep in mind, that you should *not* declare a tree path both as branch node and leaf node. Pushing data into a branch node will result in validation errors and will not be processed.
+
+### Error tile growth
+
+From our experience, low prioritized monitorings usually won't be fixed unless there is nothing else to do. And let's be honest, this does not happen very often.
+
+Every `error`tile will grow over time in priority (and on screen), so that it can compete with high priority monitorings. Each `error` tile will grow each
+
+    <tileExpansionIntervalCount> * <idleTimeoutInSeconds> seconds
+
+by
+    
+    <current priority> <tileExpansionGrowthExpression>
+    
+and will reset to the original priority as soon as the tile enters the status `ok`.
+
+Examples:
+* you pushed a monitoring with `idleTimeoutInSeconds = 60` and omitted the optional values: your error tile will grow each `60` seconds by `1`
+* you pushed a monitoring with `idleTimeoutInSeconds = 120`, `tileExpansionIntervalCount = 2` and `tileExpansionGrowthExpression = '* 3'`: your error tile will `triple` its size each `240` seconds
 
 ## Issues
 
