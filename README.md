@@ -191,32 +191,25 @@ them and they pass validation.
 
 #### Method, endpoint and headers
 
-Data collectors can `DELETE` data in JSON format to the board's endpoint `http://<PUBLIC_HOSTNAME>/api/monitoring/{id}`.
+Data collectors can `DELETE` data from the server by calling the `http://<PUBLIC_HOSTNAME>/api/monitoring/{id}` endpoint.
 
 They need to authenticate themselves with a `Bearer` token sent in the `Authorization` header.
 
 The `Content-Type` and `Accept` headers should be set to `application/json`.
 
-#### Payload format
-
-The payload needs to be a JSON object with a given set of keys:
+#### URL format
 
 | key | type | description |
 | --- | --- | --- |
 | `id` | string | is the identifier for the tile on the board |
 
-Example payload:
-
-    {"id": "My First Monitoringdata"}
-
 A complete example request with [curl](https://curl.haxx.se/) looks like:
 
-    curl -sS -D - -X POST "http://localhost/api/monitoring/SOME-ID" \
+    curl -sS -D - -X DELETE "http://localhost/api/monitoring/SOME-ID" \
     -H "Accept: application/json" \
     -H "Authorization: Bearer pleaseChooseASecretTokenForThePublicAPI" \
     -H "Content-Type: application/json" \
-    -d {\"id\": \"My First Monitoringdata\"}
-
+    
 If you receive an empty Response with a HTTP code of `204`, your monitoring data has been successfully deleted by the server and should not be displayed on the board again.
 
 
