@@ -187,6 +187,39 @@ If you receive a Response with a HTTP code of `400` you will get a list of valid
 data without errors will be processed successfully, while the ones with validation errors will not be processed until you resend 
 them and they pass validation. 
 
+### Delete monitoring data
+
+#### Method, endpoint and headers
+
+Data collectors can `DELETE` data in JSON format to the board's endpoint `http://<PUBLIC_HOSTNAME>/api/monitoring/{id}`.
+
+They need to authenticate themselves with a `Bearer` token sent in the `Authorization` header.
+
+The `Content-Type` and `Accept` headers should be set to `application/json`.
+
+#### Payload format
+
+The payload needs to be a JSON object with a given set of keys:
+
+| key | type | description |
+| --- | --- | --- |
+| `id` | string | is the identifier for the tile on the board |
+
+Example payload:
+
+    {"id": "My First Monitoringdata"}
+
+A complete example request with [curl](https://curl.haxx.se/) looks like:
+
+    curl -sS -D - -X POST "http://localhost/api/monitoring/SOME-ID" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer pleaseChooseASecretTokenForThePublicAPI" \
+    -H "Content-Type: application/json" \
+    -d {\"id\": \"My First Monitoringdata\"}
+
+If you receive an empty Response with a HTTP code of `204`, your monitoring data has been successfully deleted by the server and should not be displayed on the board again.
+
+
 ### Tree layout
 
 Your monitoring data can be displayed as a tree map. To enable this feature, you need to push the optional `path` property and fill it with a valid tree path.
