@@ -6,17 +6,17 @@ PHP monitoring dashboard documentation
 
 Phash is a set of applications to provide a PHP based monitoring dashboard, monitoring data gathering and distribution.
 
-* [ph-ash/board](https://github.com/ph-ash/board)
+* [ph-ash/board](https://github.com/ph-ash/board) [![Build Status](https://travis-ci.com/ph-ash/board.svg?branch=master)](https://travis-ci.com/ph-ash/board)
 
     frontend server, provides the actual dashboard to browsers
 
-* [ph-ash/nginx](https://github.com/ph-ash/nginx)
-
-    custom configured nginx to serve the complete application
-
-* [ph-ash/server](https://github.com/ph-ash/server)
+* [ph-ash/server](https://github.com/ph-ash/server) [![Build Status](https://travis-ci.com/ph-ash/server.svg?branch=master)](https://travis-ci.com/ph-ash/server)
 
     backend server, provides the public API for data pushers and a persistence layer
+
+* [ph-ash/nginx](https://github.com/ph-ash/nginx) [![Build Status](https://travis-ci.com/ph-ash/nginx.svg?branch=master)](https://travis-ci.com/ph-ash/nginx)
+
+    custom configured nginx to serve the complete application
 
 The inspiration for Phash were projects like [Smashing](https://github.com/Smashing/smashing) on the one hand and custom coded data collectors on the other hand.
 The vision of this project is to provide an out-of-the box working, highly customisable and extensible monitoring framework to gather and display monitoring data.
