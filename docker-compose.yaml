@@ -24,7 +24,6 @@ services:
     image: phashboard/nginx:1
     ports:
       - 80:80
-      - 8080:8080
     volumes:
       - static-assets-board:/var/www/html/board
       - static-assets-server:/var/www/html/server
