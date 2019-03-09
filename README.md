@@ -107,7 +107,7 @@ The payload needs to be a JSON object with a given set of keys:
 | `idleTimeoutInSeconds` | `integer` | defines after how many seconds after `date` `ok` tile will change its status to `idle` (`error` tiles are not affected). You should choose this value based on your data push interval. |
 | `priority` | `integer` | defines the display size of the tile on the board: the higher the _priority_, the bigger the tile in relation to other tiles |
 | `date` | `date` | defines when the monitoring data was created. Serves as starting point of the `idle` calculation. |
-| `path` | `string` | optionally defines a tree path to place the monitoring at. Tree paths are formatted like `rootName.branchName.leafName`, see [tree paths](#tree-layout) for more information. |
+| `path` | `string` | defines a tree path to place the monitoring at, can be `null`. Tree paths are formatted like `rootName.branchName.leafName`, see [tree paths](#tree-layout) for more information. |
 | `tileExpansionIntervalCount` | `integer` | optionally defines the number of times `idleTimeoutInSeconds` has to be elapsed after which an `error` tile will grow by `tileExpansionGrowthExpression`. Defaults to `1` if not provided. See [error tile growth](#error-tile-growth) for more information. |
 | `tileExpansionGrowthExpression` | `string` | optionally defines an expression for the growth of `error` tiles. Allowed formats are `+ <positive integer>` and `* <positive integer>`. Defaults to `+ 1`if not provided. See [error tile growth](#error-tile-growth) for more information. |
 
@@ -119,7 +119,8 @@ Example payload:
       "payload": "This is my payload",
       "idleTimeoutInSeconds": 60,
       "priority": 1,
-      "date": "2018-12-19T13:42:46.790Z"
+      "date": "2018-12-19T13:42:46.790Z",
+      "path": null
     }
 
 A complete example request with [curl](https://curl.haxx.se/) looks like:
@@ -128,7 +129,7 @@ A complete example request with [curl](https://curl.haxx.se/) looks like:
     -H "Accept: application/json" \
     -H "Authorization: Bearer pleaseChooseASecretTokenForThePublicAPI" \
     -H "Content-Type: application/json" \
-    -d "{ \"id\": \"My First Monitoringdata\", \"status\": \"ok\", \"payload\": \"This Monitoring is my payload\", \"idleTimeoutInSeconds\": 60, \"priority\": 1, \"date\": \"2018-12-19T13:42:46.790Z\"}"
+    -d "{ \"id\": \"My First Monitoringdata\", \"status\": \"ok\", \"payload\": \"This Monitoring is my payload\", \"idleTimeoutInSeconds\": 60, \"priority\": 1, \"date\": \"2018-12-19T13:42:46.790Z\", \"path\": null}"
 
 If you receive an empty Response with a HTTP code of `201`, your monitoring data was successfully accepted by the server and should be displayed on the board.
 Every time you reload the board, all stored monitorings will be resent from the server to the board, so you do not have to push them again.
@@ -143,7 +144,7 @@ They need to authenticate themselves with a `Bearer` token sent in the `Authoriz
 
 The `Content-Type` and `Accept` headers should be set to `application/json`.
 
-#### Payload format
+#### Payload format (bulk)
 
 The payload needs to be a JSON object with an array called `monitoringData` of objects with given keys:
 
@@ -154,29 +155,30 @@ Example payload:
     {
         "monitoringData": [
             {
-             "id": "My first Monitoringdata",
-             "status": "ok",
-             "payload": "This is my payload",
-             "idleTimeoutInSeconds": 60,
-             "priority": 1,
-             "date": "2019-02-26T20:16:30.641Z",
-             "path": "monitoring.team_phash.database"
+                "id": "My first Monitoringdata",
+                "status": "ok",
+                "payload": "This is my payload",
+                "idleTimeoutInSeconds": 60,
+                "priority": 1,
+                "date": "2019-02-26T20:16:30.641Z",
+                "path": "monitoring.team_phash.database"
             },
             {
-            "id": "My second Monitoringdata",
-            "status": "error",
-            "payload": "This is an Errormessage",
-            "idleTimeoutInSeconds": 60,
-            "priority": 5,
-            "date": "2019-02-26T20:16:30.641Z",
-            "path": "monitoring.team_phash.database"
+                "id": "My second Monitoringdata",
+                "status": "error",
+                "payload": "This is an Errormessage",
+                "idleTimeoutInSeconds": 60,
+                "priority": 5,
+                "date": "2019-02-26T20:16:30.641Z",
+                "path": "monitoring.team_phash.database"
             }
         ]
     }
 ```
+
 A complete example request with [curl](https://curl.haxx.se/) looks like:
 
-    curl -sS -D - -X POST "http://localhost/api/monitoring/data" \
+    curl -sS -D - -X POST "http://localhost/api/monitoring/data/bulk" \
     -H "Accept: application/json" \
     -H "Authorization: Bearer pleaseChooseASecretTokenForThePublicAPI" \
     -H "Content-Type: application/json" \
@@ -188,6 +190,32 @@ Every time you reload the board, all stored monitorings will be resent from the 
 If you receive a Response with a HTTP code of `400` you will get a list of validation errors in the Response-Content. All 
 data without errors will be processed successfully, while the ones with validation errors will not be processed until you resend 
 them and they pass validation. 
+
+### Delete monitoring data
+
+#### Method, endpoint and headers
+
+Data collectors can `DELETE` data from the server by calling the `http://<PUBLIC_HOSTNAME>/api/monitoring/{id}` endpoint.
+
+They need to authenticate themselves with a `Bearer` token sent in the `Authorization` header.
+
+The `Content-Type` and `Accept` headers should be set to `application/json`.
+
+#### URL format
+
+| key | type | description |
+| --- | --- | --- |
+| `id` | string | is the identifier for the tile on the board |
+
+A complete example request with [curl](https://curl.haxx.se/) looks like:
+
+    curl -sS -D - -X DELETE "http://localhost/api/monitoring/My%20first%20Monitoringdata" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer pleaseChooseASecretTokenForThePublicAPI" \
+    -H "Content-Type: application/json"
+    
+If you receive an empty Response with a HTTP code of `204`, your monitoring data has been successfully deleted by the server and should not be displayed on the board again.
+
 
 ### Tree layout
 
