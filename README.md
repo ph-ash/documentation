@@ -143,7 +143,7 @@ They need to authenticate themselves with a `Bearer` token sent in the `Authoriz
 
 The `Content-Type` and `Accept` headers should be set to `application/json`.
 
-#### Payload format
+#### Payload format (bulk)
 
 The payload needs to be a JSON object with an array called `monitoringData` of objects with given keys:
 
@@ -154,26 +154,27 @@ Example payload:
     {
         "monitoringData": [
             {
-             "id": "My first Monitoringdata",
-             "status": "ok",
-             "payload": "This is my payload",
-             "idleTimeoutInSeconds": 60,
-             "priority": 1,
-             "date": "2019-02-26T20:16:30.641Z",
-             "path": "monitoring.team_phash.database"
+                "id": "My first Monitoringdata",
+                "status": "ok",
+                "payload": "This is my payload",
+                "idleTimeoutInSeconds": 60,
+                "priority": 1,
+                "date": "2019-02-26T20:16:30.641Z",
+                "path": "monitoring.team_phash.database"
             },
             {
-            "id": "My second Monitoringdata",
-            "status": "error",
-            "payload": "This is an Errormessage",
-            "idleTimeoutInSeconds": 60,
-            "priority": 5,
-            "date": "2019-02-26T20:16:30.641Z",
-            "path": "monitoring.team_phash.database"
+                "id": "My second Monitoringdata",
+                "status": "error",
+                "payload": "This is an Errormessage",
+                "idleTimeoutInSeconds": 60,
+                "priority": 5,
+                "date": "2019-02-26T20:16:30.641Z",
+                "path": "monitoring.team_phash.database"
             }
         ]
     }
 ```
+
 A complete example request with [curl](https://curl.haxx.se/) looks like:
 
     curl -sS -D - -X POST "http://localhost/api/monitoring/data" \
@@ -207,10 +208,10 @@ The `Content-Type` and `Accept` headers should be set to `application/json`.
 
 A complete example request with [curl](https://curl.haxx.se/) looks like:
 
-    curl -sS -D - -X DELETE "http://localhost/api/monitoring/SOME-ID" \
+    curl -sS -D - -X DELETE "http://localhost/api/monitoring/My%20first%20Monitoringdata" \
     -H "Accept: application/json" \
     -H "Authorization: Bearer pleaseChooseASecretTokenForThePublicAPI" \
-    -H "Content-Type: application/json" \
+    -H "Content-Type: application/json"
     
 If you receive an empty Response with a HTTP code of `204`, your monitoring data has been successfully deleted by the server and should not be displayed on the board again.
 
