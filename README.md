@@ -62,16 +62,6 @@ You can configure the external ports of the application by changing the `ports` 
 
 You can and should configure several application variables by adding `environment` variables the `docker-compose.yaml`. All variables are optional; the default settings are suitable for a local test setup.
 
-### server
-
-| variable | default value | description |
-| --- | --- | --- |
-| `API_TOKEN` | `pleaseChooseASecretTokenForThePublicAPI` | This token must be used by the data pushers as Bearer authorization header (see [Usage](#usage)). It is **highly recommended** to change this value for production systems. |
-| `MONGODB_URL` | `mongodb://mongo:27017` | Complete URL of the MongoDB which stores submitted monitorings, in case you want to reuse an existing installation. |
-| `MONGODB_DB` | `phash` | MongoDB name for storing submitted monitorings, in case you want to reuse an existing installation. |
-| `WAMP_HOST` | `board` | The host name of the WAMP server. |
-| `WAMP_REALM` | `realm1` | The WAMP realm to use for communication. Needs to match the [board setting](#board). |
-
 ### board
 
 | variable | default value | description |
@@ -82,6 +72,16 @@ You can and should configure several application variables by adding `environmen
 | `WAMP_INTERNAL_HOSTNAME` | `board` | The internal hostname the websocket will listen for trusted connections from the server. This should always match the service name used in the `docker-compose.yaml`. |
 | `WAMP_PASSWORD` | `pleaseChooseASecretPasswordForTheWebsocket` | WAMP password for connections from browsers. It is **highly recommended** to change this value for production systems. |
 | `WAMP_REALM` | `realm1` | The WAMP realm to use for communication. Needs to match the [server setting](#server). |
+
+### server
+
+| variable | default value | description |
+| --- | --- | --- |
+| `API_TOKEN` | `pleaseChooseASecretTokenForThePublicAPI` | This token must be used by the data pushers as Bearer authorization header (see [Usage](#usage)). It is **highly recommended** to change this value for production systems. |
+| `MONGODB_URL` | `mongodb://mongo:27017` | Complete URL of the MongoDB which stores submitted monitorings, in case you want to reuse an existing installation. |
+| `MONGODB_DB` | `phash` | MongoDB name for storing submitted monitorings, in case you want to reuse an existing installation. |
+| `WAMP_HOST` | `board` | The host name of the WAMP server. |
+| `WAMP_REALM` | `realm1` | The WAMP realm to use for communication. Needs to match the [board setting](#board). |
 
 ## Usage
 
