@@ -42,6 +42,16 @@ The vision of this project is to provide an out-of-the box working, highly custo
 
 ![General Architecture](assets/architecture/architecture.png)
 
+### Why mongoDB
+
+We chose to use [mongoDB](https://www.mongodb.com/) as our primary data storage server, because we
+
+* have a very flat data model, which fits a document store more than a relational database management system
+* therefore do not need the power of SQL
+* neither do we need a high "ACIDity"
+
+The data is persisted in a subfolder `mongodata` of the folder where you placed your `docker-compose.yaml`. This enables seamless updates without the need to collect all monitoring data again. 
+
 ## Installation
 
 You can simply download the [docker-compose.yaml](https://raw.githubusercontent.com/ph-ash/documentation/master/docker-compose.yaml) and run
@@ -60,7 +70,18 @@ If you want to destroy the setup, be sure to include the `-v` flag to also remov
 
 You can configure the external ports of the application by changing the `ports` of the `nginx` service accordingly.
 
-You can and should configure several application variables by adding `environment` variables the `docker-compose.yaml`. All variables are optional; the default settings are suitable for a local test setup.
+You can and should configure several application variables by adding `environment` variables the `docker-compose.yaml`. All variables are optional; the default settings are suitable for a local test setup, but not for a production system.
+
+### board
+
+| variable | default value | description |
+| --- | --- | --- |
+| `APP_SECRET` | `73adb4285b84053d174db4b65ffa8ff4bfa24e1b` | A secret for generating CSRF tokens. It is **highly recommended** to change this value for production systems. |
+| `BOARD_LOGIN_PASSWORD` | `phash-board` | The password of the frontend user named `phash-board`. It is **highly recommended** to change this value for production systems. |
+| `PUBLIC_WEBSOCKET_URL` | `ws://localhost/websocket` | The public websocket url, necessary for the internal WAMP connection. It is **necessary** to change this value if you either intend to run it on a dedicated server or behind a HTTPS proxy.<br/> If you use a dedicated server, replace `localhost` with the server host name.<br/> If you use a HTTPS proxy, change the URL scheme from `ws` to `wss`. |
+| `WAMP_INTERNAL_HOSTNAME` | `board` | The internal hostname the websocket will listen for trusted connections from the server. This should always match the service name used in the `docker-compose.yaml`. |
+| `WAMP_PASSWORD` | `pleaseChooseASecretPasswordForTheWebsocket` | WAMP password for connections from browsers. It is **highly recommended** to change this value for production systems. |
+| `WAMP_REALM` | `realm1` | The WAMP realm to use for communication. Needs to match the [server setting](#server). |
 
 ### server
 
@@ -71,17 +92,6 @@ You can and should configure several application variables by adding `environmen
 | `MONGODB_DB` | `phash` | MongoDB name for storing submitted monitorings, in case you want to reuse an existing installation. |
 | `WAMP_HOST` | `board` | The host name of the WAMP server. |
 | `WAMP_REALM` | `realm1` | The WAMP realm to use for communication. Needs to match the [board setting](#board). |
-
-### board
-
-| variable | default value | description |
-| --- | --- | --- |
-| `APP_SECRET` | `73adb4285b84053d174db4b65ffa8ff4bfa24e1b` | A secret for generating CSRF tokens. It is **highly recommended** to change this value for production systems. |
-| `BOARD_LOGIN_PASSWORD` | `phash-board` | The password of the frontend user named `phash-board`. It is **highly recommended** to change this value for production systems. |
-| `PUBLIC_WEBSOCKET_URL` | `ws://localhost/websocket` | The public websocket url, necessary for the internal WAMP connection. It is *necessary* to change this value for production systems if you want to run this on a dedicated server. |
-| `WAMP_INTERNAL_HOSTNAME` | `board` | The internal hostname the websocket will listen for trusted connections from the server. This should always match the service name used in the `docker-compose.yaml`. |
-| `WAMP_PASSWORD` | `pleaseChooseASecretPasswordForTheWebsocket` | WAMP password for connections from browsers. It is **highly recommended** to change this value for production systems. |
-| `WAMP_REALM` | `realm1` | The WAMP realm to use for communication. Needs to match the [server setting](#server). |
 
 ## Usage
 
