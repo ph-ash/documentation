@@ -42,6 +42,16 @@ The vision of this project is to provide an out-of-the box working, highly custo
 
 ![General Architecture](assets/architecture/architecture.png)
 
+### Why mongoDB
+
+We chose to use [mongoDB](https://www.mongodb.com/) as our primary data storage server, because we
+
+* have a very flat data model, which fits a document store more than a relational database management system
+* therefore do not need the power of SQL
+* neither do we need a high "ACIDity"
+
+The data is persisted in a subfolder `mongodata` of the folder where you placed your `docker-compose.yaml`. This enables seamless updates without the need to collect all monitoring data again. 
+
 ## Installation
 
 You can simply download the [docker-compose.yaml](https://raw.githubusercontent.com/ph-ash/documentation/master/docker-compose.yaml) and run
