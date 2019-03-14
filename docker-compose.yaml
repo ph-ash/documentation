@@ -3,13 +3,6 @@ version: '3.5'
 services:
   board:
     image: phashboard/board:1
-    environment:
-      APP_SECRET: 73adb4285b84053d174db4b65ffa8ff4bfa24e1b
-      BOARD_LOGIN_PASSWORD: phash-board
-      PUBLIC_WEBSOCKET_URL: ws://localhost/websocket
-      WAMP_INTERNAL_HOSTNAME: board
-      WAMP_PASSWORD: pleaseChooseASecretPasswordForTheWebsocket
-      WAMP_REALM: realm1
     volumes:
       - static-assets-board:/var/www/html/public
     logging:
@@ -17,12 +10,6 @@ services:
 
   server:
     image: phashboard/server:1
-    environment:
-      API_TOKEN: pleaseChooseASecretTokenForThePublicAPI
-      MONGODB_URL: mongodb://mongo:27017
-      MONGODB_DB: phash
-      WAMP_HOST: board
-      WAMP_REALM: realm1
     volumes:
       - static-assets-server:/var/www/html/public
     logging:
