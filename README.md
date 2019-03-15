@@ -141,7 +141,7 @@ A complete example request with [curl](https://curl.haxx.se/) looks like:
     -H "Accept: application/json" \
     -H "Authorization: Bearer pleaseChooseASecretTokenForThePublicAPI" \
     -H "Content-Type: application/json" \
-    -d "{ \"id\": \"My First Monitoringdata\", \"status\": \"ok\", \"payload\": \"This is an error, fix it here <a href=\\"https://github.com/ph-ash\\" target=\\"_blank\\">My internal System</a>\", \"idleTimeoutInSeconds\": 60, \"priority\": 1, \"date\": \"2018-12-19T13:42:46.790Z\", \"path\": null}"
+    -d "{ \"id\": \"My First Monitoringdata\", \"status\": \"ok\", \"payload\": \"This is an error, fix it here <a href=\\\"https://github.com/ph-ash\\\" target=\\\"_blank\\\">My internal System</a>\", \"idleTimeoutInSeconds\": 60, \"priority\": 1, \"date\": \"2018-12-19T13:42:46.790Z\", \"path\": null}"
 
 If you receive an empty Response with a HTTP code of `201`, your monitoring data was successfully accepted by the server and should be displayed on the board.
 Every time you reload the board, all stored monitorings will be resent from the server to the board, so you do not have to push them again.
