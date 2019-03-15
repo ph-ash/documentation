@@ -2,14 +2,14 @@ version: '3.5'
 
 services:
   board:
-    image: phashboard/board:1
+    image: phashboard/board:2
     volumes:
       - static-assets-board:/var/www/html/public
     logging:
       driver: none
 
   server:
-    image: phashboard/server:1
+    image: phashboard/server:2
     volumes:
       - static-assets-server:/var/www/html/public
     logging:
@@ -21,7 +21,7 @@ services:
       - ./mongodata:/data/db
 
   nginx:
-    image: phashboard/nginx:1
+    image: phashboard/nginx:2
     ports:
       - 80:80
     volumes:
