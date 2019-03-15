@@ -54,7 +54,7 @@ The data is persisted in a subfolder `mongodata` of the folder where you placed 
 
 ## Installation
 
-You can simply download the [docker-compose.yaml](https://raw.githubusercontent.com/ph-ash/documentation/master/docker-compose.yaml) and run
+You can simply download the [docker-compose.yaml](https://raw.githubusercontent.com/ph-ash/documentation/v2.0.0/docker-compose.yaml) and run
 
     docker-compose up -d
 
