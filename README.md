@@ -115,7 +115,7 @@ The payload needs to be a JSON object with a given set of keys:
 | --- | --- | --- |
 | `id` | string | is the identifier for the tile on the board |
 | `status` | `enum` (`ok`, `error`) | defines in which color the tile will appear initially (green or red) |
-| `payload` | `string` | is the message which will be displayed in the tile hover |
+| `payload` | `string` | is the message which will be shown in a modal if you click a tile, may contain HTML |
 | `idleTimeoutInSeconds` | `integer` | defines after how many seconds after `date` `ok` tile will change its status to `idle` (`error` tiles are not affected). You should choose this value based on your data push interval. |
 | `priority` | `integer` | defines the display size of the tile on the board: the higher the _priority_, the bigger the tile in relation to other tiles |
 | `date` | `date` | defines when the monitoring data was created. Serves as starting point of the `idle` calculation. |
@@ -128,7 +128,7 @@ Example payload:
     {
       "id": "My First Monitoringdata",
       "status": "ok",
-      "payload": "This is my payload",
+      "payload": "This is an error, fix it here <a href=\"https://github.com/ph-ash\" target=\"_blank\">My internal System</a>",
       "idleTimeoutInSeconds": 60,
       "priority": 1,
       "date": "2018-12-19T13:42:46.790Z",
@@ -141,7 +141,7 @@ A complete example request with [curl](https://curl.haxx.se/) looks like:
     -H "Accept: application/json" \
     -H "Authorization: Bearer pleaseChooseASecretTokenForThePublicAPI" \
     -H "Content-Type: application/json" \
-    -d "{ \"id\": \"My First Monitoringdata\", \"status\": \"ok\", \"payload\": \"This Monitoring is my payload\", \"idleTimeoutInSeconds\": 60, \"priority\": 1, \"date\": \"2018-12-19T13:42:46.790Z\", \"path\": null}"
+    -d "{ \"id\": \"My First Monitoringdata\", \"status\": \"ok\", \"payload\": \"This is an error, fix it here <a href=\\"https://github.com/ph-ash\\" target=\\"_blank\\">My internal System</a>\", \"idleTimeoutInSeconds\": 60, \"priority\": 1, \"date\": \"2018-12-19T13:42:46.790Z\", \"path\": null}"
 
 If you receive an empty Response with a HTTP code of `201`, your monitoring data was successfully accepted by the server and should be displayed on the board.
 Every time you reload the board, all stored monitorings will be resent from the server to the board, so you do not have to push them again.
