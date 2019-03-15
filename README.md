@@ -70,7 +70,9 @@ If you want to destroy the setup, be sure to include the `-v` flag to also remov
 
 You can configure the external ports of the application by changing the `ports` of the `nginx` service accordingly.
 
-You can and should configure several application variables by adding `environment` variables the `docker-compose.yaml`. All variables are optional; the default settings are suitable for a local test setup, but not for a production system.
+You can and should configure several application variables by overwriting `environment` variables. All variables are optional; the default settings are suitable for a local test setup, but not for a production system.
+
+You should not change the `docker-compose.yaml` to configure your specific environment, but choose another way of storing your environment separately, to not bet affected by future updates of the `docker-compose.yaml`. See the [docker-compose documentation](https://docs.docker.com/compose/environment-variables/) for more information, recommended are ["Pass environment variables to containers"](https://docs.docker.com/compose/environment-variables/#pass-environment-variables-to-containers) and ["The 'env_file' configuration option"](https://docs.docker.com/compose/environment-variables/#the-env_file-configuration-option).
 
 ### board
 
