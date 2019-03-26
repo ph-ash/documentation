@@ -1,0 +1,9 @@
+[submodule "board"]
+	path = board
+	url = https://github.com/ph-ash/board
+[submodule "server"]
+	path = server
+	url = https://github.com/ph-ash/server
+[submodule "nginx"]
+	path = nginx
+	url = https://github.com/ph-ash/nginx
