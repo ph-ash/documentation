@@ -1,0 +1,25 @@
+{
+    "type": "project",
+    "license": "proprietary",
+    "require": {
+        "php": "^7.2.11",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "behat/behat": "^3.5",
+        "dmore/behat-chrome-extension": "^1.2",
+        "kriswallsmith/buzz": "^1.0",
+        "liuggio/fastest": "^1.6",
+        "nyholm/psr7": "^1.1",
+        "roave/security-advisories": "dev-master",
+        "symfony/process": "^4.2",
+        "symfony/property-access": "^4.2",
+        "webmozart/assert": "^1.4"
+    },
+    "config": {
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true
+    }
+}
