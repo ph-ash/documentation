@@ -1,6 +1,9 @@
+.dockerignore
 .env.local
 .env.*.local
 .git*
 .idea
+.travis.yml
 Dockerfile
+/docker/runTests.sh
 mongodata/
