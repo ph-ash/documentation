@@ -1,0 +1,21 @@
+dist: xenial
+
+language: minimal
+
+services:
+  - docker
+
+script:
+  - mkdir screenshots
+  - cd server
+  - docker build . -t phashserver
+  - cd ../board
+  - docker build . -t phashboard
+  - cd ../nginx
+  - docker build . -t phashnginx
+  - cd ../
+  - docker build . -t phashtests
+  - SCENARIO= docker-compose -f docker-compose.yaml -f docker-compose.test.yaml pull mongo chrome
+  - docker/runTests.sh
+  - cd screenshots
+  - find . -name "*.png" -exec bash -c 'curl -s -F "file=@{}" https://file.io | jq .link | tr -d "\""' \;
