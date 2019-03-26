@@ -35,3 +35,4 @@ services:
       - mongo
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - ./screenshots:/tmp
