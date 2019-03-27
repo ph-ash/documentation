@@ -7,11 +7,17 @@ services:
 
 script:
   - mkdir screenshots
+  - rm -fr .git/
+  - git clone https://github.com/ph-ash/server.git server
   - cd server
   - docker build . -t phashserver
-  - cd ../board
+  - cd ../
+  - git clone https://github.com/ph-ash/board.git board
+  - cd board
   - docker build . -t phashboard
-  - cd ../nginx
+  - cd ../
+  - git clone https://github.com/ph-ash/nginx.git nginx
+  - cd nginx
   - docker build . -t phashnginx
   - cd ../
   - docker build . -t phashtests
