@@ -1,6 +1,9 @@
 dist: xenial
 
-language: minimal
+language: php
+
+php:
+  - '7.2'
 
 services:
   - docker
@@ -22,6 +25,8 @@ script:
   - cd ../
   - docker build . -t phashtests
   - SCENARIO= docker-compose -f docker-compose.yaml -f docker-compose.test.yaml pull mongo chrome
+  - composer install --ignore-platform-reqs
+  - composer dump-autoload --optimize
   - docker/runTests.sh
   - cd screenshots
   - find . -name "*.png" -exec bash -c 'curl -s -F "file=@{}" https://file.io | jq .link | tr -d "\""' \;
