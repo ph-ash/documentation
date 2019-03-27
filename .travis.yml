@@ -10,30 +10,29 @@ services:
 
 notifications:
   slack:
-    rooms:
-      secure: "o1ew1pD2EP49WfmGW8V2yGphxu+HckVhuKcSC9s5btBhPFBFp9Vo9nsJ4NtCu/w0R2lx2MfFtcqE5lRKvgrD3MYJunmRelnq6Y9QDzew8vFNupXDm8Hcw2RGh+NSjYpeitHVbq8DmaViJvlfu7M0svRQ6hby3BA6IAsp2klHclJg7nIE7fw0kJdNxR3xZAMjY34PYQ/X1tkHgZojNDNAhaKjMW7XXvB4+B6YEqFacORIlI2DFFCt8ujbisHhXsMmIwUt2WXdA8SgtISeEjeRDZ5EhqMbDjj8VafpNQAj24DyBWftj5T09MJDG/MtbuX5LzLvlYmqnXq+3HA/4JJiLBDJdIxirJ98uyE9UJA1EhKnK+Uxf7277ua06EPtyT3WRYSIEzC3/zxZ/XDoPVa92tRYY5lFdWeUEsZxa4oVykQHHYxR1zNQtoqOkaAwEepN1HUTXFHM/JpIVn5scw2rhSl7XVb2tZ81eQlgkXPo+pZKynC4owm8UKXqawiTWd8uKZJKEf6T8lY36x7DJlV1VptJiD06JdQYlKhLgW7Vln63Atl8Wch6bhlXjep2iF+47SRfKvlOjfIjEEUUvtCAxoWCcC2cXdMnlkkhUrQpxyIg35xeEkJFI4j0iaqBUT27N8QhoBARpK6VP6bcNz+8OkHXAXdPJNHCImRj9Rz8AaA="
-
+    secure: "o1ew1pD2EP49WfmGW8V2yGphxu+HckVhuKcSC9s5btBhPFBFp9Vo9nsJ4NtCu/w0R2lx2MfFtcqE5lRKvgrD3MYJunmRelnq6Y9QDzew8vFNupXDm8Hcw2RGh+NSjYpeitHVbq8DmaViJvlfu7M0svRQ6hby3BA6IAsp2klHclJg7nIE7fw0kJdNxR3xZAMjY34PYQ/X1tkHgZojNDNAhaKjMW7XXvB4+B6YEqFacORIlI2DFFCt8ujbisHhXsMmIwUt2WXdA8SgtISeEjeRDZ5EhqMbDjj8VafpNQAj24DyBWftj5T09MJDG/MtbuX5LzLvlYmqnXq+3HA/4JJiLBDJdIxirJ98uyE9UJA1EhKnK+Uxf7277ua06EPtyT3WRYSIEzC3/zxZ/XDoPVa92tRYY5lFdWeUEsZxa4oVykQHHYxR1zNQtoqOkaAwEepN1HUTXFHM/JpIVn5scw2rhSl7XVb2tZ81eQlgkXPo+pZKynC4owm8UKXqawiTWd8uKZJKEf6T8lY36x7DJlV1VptJiD06JdQYlKhLgW7Vln63Atl8Wch6bhlXjep2iF+47SRfKvlOjfIjEEUUvtCAxoWCcC2cXdMnlkkhUrQpxyIg35xeEkJFI4j0iaqBUT27N8QhoBARpK6VP6bcNz+8OkHXAXdPJNHCImRj9Rz8AaA="
+    on_success: always
     on_failure: always
 
 script:
   - mkdir screenshots
-  - rm -fr .git/
-  - git clone https://github.com/ph-ash/server.git server
-  - cd server
-  - docker build . -t phashserver
-  - cd ../
-  - git clone https://github.com/ph-ash/board.git board
-  - cd board
-  - docker build . -t phashboard
-  - cd ../
-  - git clone https://github.com/ph-ash/nginx.git nginx
-  - cd nginx
-  - docker build . -t phashnginx
-  - cd ../
-  - docker build . -t phashtests
-  - SCENARIO= docker-compose -f docker-compose.yaml -f docker-compose.test.yaml pull mongo chrome
-  - composer install --ignore-platform-reqs
-  - composer dump-autoload --optimize
-  - docker/runTests.sh
-  - cd screenshots
-  - find . -name "*.png" -exec bash -c 'curl -s -F "file=@{}" https://file.io | jq .link | tr -d "\""' \;
+#  - rm -fr .git/
+#  - git clone https://github.com/ph-ash/server.git server
+#  - cd server
+#  - docker build . -t phashserver
+#  - cd ../
+#  - git clone https://github.com/ph-ash/board.git board
+#  - cd board
+#  - docker build . -t phashboard
+#  - cd ../
+#  - git clone https://github.com/ph-ash/nginx.git nginx
+#  - cd nginx
+#  - docker build . -t phashnginx
+#  - cd ../
+#  - docker build . -t phashtests
+#  - SCENARIO= docker-compose -f docker-compose.yaml -f docker-compose.test.yaml pull mongo chrome
+#  - composer install --ignore-platform-reqs
+#  - composer dump-autoload --optimize
+#  - docker/runTests.sh
+#  - cd screenshots
+#  - find . -name "*.png" -exec bash -c 'curl -s -F "file=@{}" https://file.io | jq .link | tr -d "\""' \;
