@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.0.1
+
+* fix broken server docker image
+* fix board update when bulk pushing
+* optimized docker images build time and image size
+
 ## v2.0.0
 
 * add detail view for monitorings
