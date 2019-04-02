@@ -12,12 +12,16 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\MinkContext;
 use Buzz\Browser;
 use Buzz\Client\Curl;
+use Buzz\Exception\ClientException;
+use Buzz\Exception\InvalidArgumentException;
+use Buzz\Exception\LogicException;
 use DateTime;
 use Exception;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Webmozart\Assert\Assert;
@@ -64,7 +68,59 @@ class APIContext implements Context
      */
     public function iAddOrUpdateAMonitoringThroughTheApi(TableNode $table): void
     {
-        $dataToSend = [
+        $dataToSend = $this->createDefaultDataToSend();
+
+        $pa = new PropertyAccessor();
+        foreach ($table->getHash() as $row) {
+            $pa->setValue($dataToSend, '[' . $row['property'] . ']', $row['value']);
+        }
+
+        $response = $this->requestApi('/monitoring/data', $dataToSend);
+
+        Assert::lessThan(
+            $response->getStatusCode(),
+            300,
+            'received status code %s, expected 2xx: ' . $response->getBody()->getContents()
+        );
+
+        sleep(1);
+    }
+
+    /**
+     * @When I add/update some monitorings through the API:
+     *
+     * @throws Exception
+     * @throws ClientExceptionInterface
+     */
+    public function iAddOrUpdateSomeMonitoringsThroughTheApi(TableNode $table)
+    {
+        $monitorings = [];
+        $pa = new PropertyAccessor();
+        foreach ($table->getHash() as $row) {
+            if (!isset($monitorings[$row['id']])) {
+                $pa->setValue($monitorings, '[' . $row['id'] . ']', ['id' => $row['id']] + $this->createDefaultDataToSend());
+            }
+            $pa->setValue($monitorings, '[' . $row['id'] . '][' . $row['property'] . ']', $row['value']);
+        }
+        $dataToSend = ['monitoringData' => array_values($monitorings)];
+
+        $response = $this->requestApi('/monitoring/data/bulk', $dataToSend);
+
+        Assert::lessThan(
+            $response->getStatusCode(),
+            300,
+            'received status code %s, expected 2xx: ' . $response->getBody()->getContents()
+        );
+
+        sleep(1);
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function createDefaultDataToSend(): array
+    {
+        return [
             'status' => 'ok',
             'payload' => '',
             'idleTimeoutInSeconds' => 60,
@@ -72,20 +128,29 @@ class APIContext implements Context
             'date' => (new DateTime())->format(DATE_ATOM),
             'path' => null
         ];
+    }
 
-        $pa = new PropertyAccessor();
-        foreach ($table->getHash() as $row) {
-            $pa->setValue($dataToSend, '[' . $row['property'] . ']', $row['value']);
-        }
-
-        $request = $this->requestFactory->createRequest('POST', $this->minkContext->getMinkParameter('base_url') . '/api/monitoring/data')
-            ->withHeader('Authorization', 'Bearer pleaseChooseASecretTokenForThePublicAPI')
-            ->withHeader('Content-Type', 'application/json')
-            ->withBody($this->streamFactory->createStream(\json_encode($dataToSend)));
-        $response = $this->client->sendRequest($request);
-
-        Assert::lessThan($response->getStatusCode(), 300, 'received status code %s, expected 2xx');
-
-        sleep(1);
+    /**
+     * @throws ClientExceptionInterface
+     * @throws ClientException
+     * @throws InvalidArgumentException
+     * @throws LogicException
+     * @throws \InvalidArgumentException
+     */
+    private function requestApi(string $endpoint, array $dataToSend): ResponseInterface
+    {
+        $request = $this->requestFactory->createRequest(
+            'POST',
+            $this->minkContext->getMinkParameter('base_url') . '/api' . $endpoint
+        )->withHeader(
+            'Authorization',
+            'Bearer pleaseChooseASecretTokenForThePublicAPI'
+        )->withHeader(
+            'Content-Type',
+            'application/json'
+        )->withBody(
+            $this->streamFactory->createStream(\json_encode($dataToSend))
+        );
+        return $this->client->sendRequest($request);
     }
 }

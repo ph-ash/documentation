@@ -36,7 +36,25 @@ Feature: display monitoring state on a dashboard
     When I click on the monitoring "single 1"
     Then I see "a helpful message" in the detail view
 
-#  Scenario: push multiple monitoring data and delete monitoring data (frontend + api)
+
+  Scenario: push multiple monitoring data and delete monitoring data
+    Given an empty dashboard
+    When I add some monitorings through the API:
+      | id     | property | value                    |
+      | bulk 1 | status   | ok                       |
+      | bulk 2 | status   | ok                       |
+      | bulk 2 | date     | 2019-01-01T01:02:03.456Z |
+      | bulk 3 | status   | error                    |
+      | bulk 4 | status   | error                    |
+      | bulk 4 | path     | bulk 1                   |
+      | bulk 5 | status   | ok                       |
+    Then I see 4 monitoring tiles
+    And I see the monitoring "bulk 1" as a "green" tile
+    And I see the monitoring "bulk 2" as a "yellow" tile
+    And I see the monitoring "bulk 3" as a "red" tile
+    And I see the monitoring "bulk 5" as a "green" tile
+
+
 #  Scenario: idletimeout
 #  Scenario: filled board is navigated up and down (path + color aggregation!) + URL navigation
 #  Scenario: tile expansion (incl. priority)
