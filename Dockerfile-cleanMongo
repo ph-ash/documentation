@@ -1,0 +1,5 @@
+FROM docker:18
+
+COPY entrypoint-cleanMongo.sh .
+
+ENTRYPOINT ["./entrypoint-cleanMongo.sh"]

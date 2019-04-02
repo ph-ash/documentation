@@ -8,6 +8,8 @@ services:
 
   server:
     image: phashserver
+    depends_on:
+      - cleanmongo
 
   nginx:
     image: phashnginx
@@ -15,6 +17,13 @@ services:
   mongo:
     logging:
       driver: none
+
+  cleanmongo:
+    image: phashcleanmongo
+    depends_on:
+      - mongo
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
 
   chrome:
     image: yukinying/chrome-headless-browser:74.0.3729.28

@@ -30,6 +30,7 @@ script:
   - cd nginx
   - docker build . -t phashnginx
   - cd ../
+  - docker build docker -f Dockerfile-cleanMongo -t phashcleanmongo
   - docker build . -t phashtests
   - SCENARIO= docker-compose -f docker-compose.yaml -f docker-compose.test.yaml pull mongo chrome
   - composer install --ignore-platform-reqs
