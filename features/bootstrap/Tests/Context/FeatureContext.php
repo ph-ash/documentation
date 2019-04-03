@@ -41,7 +41,7 @@ class FeatureContext implements Context
     public function beforeScenario(): void
     {
         $process = new Process(
-            ['docker-compose', '--project-name', 'phash', '--file', 'docker-compose.yaml', '--file', 'docker-compose.test.yaml', 'exec', '-T', 'server', 'bin/console', 'doc:mon:sch:drop']
+            ['docker-compose', '--project-name', 'phash', '--file', 'docker-compose.yaml', '--file', 'docker-compose.test.yaml', 'exec', '-T', 'server', 'bin/console', 'doc:mon:sch:drop', '--db']
         );
         $process->mustRun();
         $process = new Process(
