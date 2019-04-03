@@ -60,6 +60,37 @@ Feature: display monitoring state on a dashboard
     When I delete the monitoring "bulk 3" in the dashboard
     Then I see 2 monitoring tiles
 
-#  Scenario: idletimeout
+
+  Scenario: monitorings idle if no data is pushed regularly
+    Given an empty dashboard
+    When I add a monitoring through the API:
+      | property             | value |
+      | id                   | idle  |
+      | status               | ok    |
+      | idleTimeoutInSeconds | 5     |
+    Then I see 1 monitoring tiles
+    And I see the monitoring "idle" as a "green" tile
+
+    When I wait for 10 seconds
+    Then I see the monitoring "idle" as a "yellow" tile
+
+    When I update a monitoring through the API:
+      | property             | value |
+      | id                   | idle  |
+      | status               | ok    |
+      | idleTimeoutInSeconds | 5     |
+    Then I see the monitoring "idle" as a "green" tile
+
+    When I update a monitoring through the API:
+      | property             | value |
+      | id                   | idle  |
+      | status               | error |
+      | idleTimeoutInSeconds | 5     |
+    Then I see the monitoring "idle" as a "red" tile
+
+    When I wait for 10 seconds
+    Then I see the monitoring "idle" as a "red" tile
+
+
 #  Scenario: filled board is navigated up and down (path + color aggregation!) + URL navigation
 #  Scenario: tile expansion (incl. priority)

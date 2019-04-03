@@ -59,4 +59,12 @@ class FeatureContext implements Context
             $this->minkContext->saveScreenshot($scope->getFeature()->getTitle() . ' - line ' . $scope->getStep()->getLine() . '.png');
         }
     }
+
+    /**
+     * @When I wait for :seconds seconds
+     */
+    public function iWaitForSeconds(int $seconds): void
+    {
+        sleep($seconds);
+    }
 }

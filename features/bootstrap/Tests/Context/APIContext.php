@@ -28,6 +28,7 @@ use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException as Prope
 use Symfony\Component\PropertyAccess\Exception\UnexpectedTypeException;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Webmozart\Assert\Assert;
+use function in_array;
 use function json_encode;
 
 class APIContext implements Context
@@ -76,7 +77,7 @@ class APIContext implements Context
 
         $pa = new PropertyAccessor();
         foreach ($table->getHash() as $row) {
-            $pa->setValue($dataToSend, '[' . $row['property'] . ']', $row['value']);
+            $pa->setValue($dataToSend, '[' . $row['property'] . ']', $this->castValue($row));
         }
 
         $response = $this->requestApi('/monitoring/data', $dataToSend, 'POST');
@@ -166,7 +167,7 @@ class APIContext implements Context
             if (!isset($monitorings[$row['id']])) {
                 $pa->setValue($monitorings, '[' . $row['id'] . ']', ['id' => $row['id']] + $this->createDefaultDataToSend());
             }
-            $pa->setValue($monitorings, '[' . $row['id'] . '][' . $row['property'] . ']', $row['value']);
+            $pa->setValue($monitorings, '[' . $row['id'] . '][' . $row['property'] . ']', $this->castValue($row));
         }
         return ['monitoringData' => array_values($monitorings)];
     }
@@ -211,5 +212,13 @@ class APIContext implements Context
             );
         }
         return $this->client->sendRequest($request);
+    }
+
+    private function castValue(array $row)
+    {
+        if (in_array($row['property'], ['idleTimeoutInSeconds', 'priority', 'tileExpansionIntervalCount'], true)) {
+            return (int) $row['value'];
+        }
+        return $row['value'];
     }
 }
