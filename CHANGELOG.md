@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.0.2
+
+* fix to reject pushes into leafs
+* fix resetting priority of grown tiles
+* optimize update delay from API call to board push
+
 ## v2.0.1
 
 * fix broken server docker image
