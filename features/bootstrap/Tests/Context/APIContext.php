@@ -23,8 +23,12 @@ use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamFactoryInterface;
+use Symfony\Component\PropertyAccess\Exception\AccessException;
+use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException as PropertyAccessInvalidArgumentException;
+use Symfony\Component\PropertyAccess\Exception\UnexpectedTypeException;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Webmozart\Assert\Assert;
+use function json_encode;
 
 class APIContext implements Context
 {
@@ -75,7 +79,7 @@ class APIContext implements Context
             $pa->setValue($dataToSend, '[' . $row['property'] . ']', $row['value']);
         }
 
-        $response = $this->requestApi('/monitoring/data', $dataToSend);
+        $response = $this->requestApi('/monitoring/data', $dataToSend, 'POST');
 
         Assert::lessThan(
             $response->getStatusCode(),
@@ -92,7 +96,69 @@ class APIContext implements Context
      * @throws Exception
      * @throws ClientExceptionInterface
      */
-    public function iAddOrUpdateSomeMonitoringsThroughTheApi(TableNode $table)
+    public function iAddOrUpdateSomeMonitoringsThroughTheApi(TableNode $table): void
+    {
+        $dataToSend = $this->createBulkDtoFromTable($table);
+
+        $response = $this->requestApi('/monitoring/data/bulk', $dataToSend, 'POST');
+
+        Assert::lessThan(
+            $response->getStatusCode(),
+            300,
+            'received status code %s, expected 2xx: ' . $response->getBody()->getContents()
+        );
+
+        sleep(1);
+    }
+
+    /**
+     * @When I add/update some monitorings through the API with errors:
+     *
+     * @throws Exception
+     * @throws ClientExceptionInterface
+     */
+    public function iAddOrUpdateSomeMonitoringsThroughTheApiWithErrors(TableNode $table): void
+    {
+        $dataToSend = $this->createBulkDtoFromTable($table);
+
+        $response = $this->requestApi('/monitoring/data/bulk', $dataToSend, 'POST');
+
+        Assert::range(
+            $response->getStatusCode(),
+            400,
+            499,
+            'received status code %s, expected 4xx: ' . $response->getBody()->getContents()
+        );
+
+        sleep(1);
+    }
+
+    /**
+     * @When I delete the monitoring :id through the API
+     *
+     * @throws Exception
+     * @throws ClientExceptionInterface
+     */
+    public function iDeleteTheMonitoringThroughTheApi(string $id): void
+    {
+        $response = $this->requestApi(sprintf('/monitoring/%s', rawurlencode($id)), null, 'DELETE');
+
+        Assert::lessThan(
+            $response->getStatusCode(),
+            300,
+            'received status code %s, expected 2xx: ' . $response->getBody()->getContents()
+        );
+
+        sleep(1);
+    }
+
+    /**
+     * @throws AccessException
+     * @throws PropertyAccessInvalidArgumentException
+     * @throws UnexpectedTypeException
+     * @throws Exception
+     */
+    private function createBulkDtoFromTable(TableNode $table): array
     {
         $monitorings = [];
         $pa = new PropertyAccessor();
@@ -102,17 +168,7 @@ class APIContext implements Context
             }
             $pa->setValue($monitorings, '[' . $row['id'] . '][' . $row['property'] . ']', $row['value']);
         }
-        $dataToSend = ['monitoringData' => array_values($monitorings)];
-
-        $response = $this->requestApi('/monitoring/data/bulk', $dataToSend);
-
-        Assert::lessThan(
-            $response->getStatusCode(),
-            300,
-            'received status code %s, expected 2xx: ' . $response->getBody()->getContents()
-        );
-
-        sleep(1);
+        return ['monitoringData' => array_values($monitorings)];
     }
 
     /**
@@ -137,10 +193,10 @@ class APIContext implements Context
      * @throws LogicException
      * @throws \InvalidArgumentException
      */
-    private function requestApi(string $endpoint, array $dataToSend): ResponseInterface
+    private function requestApi(string $endpoint, ?array $dataToSend, string $method): ResponseInterface
     {
         $request = $this->requestFactory->createRequest(
-            'POST',
+            $method,
             $this->minkContext->getMinkParameter('base_url') . '/api' . $endpoint
         )->withHeader(
             'Authorization',
@@ -148,9 +204,12 @@ class APIContext implements Context
         )->withHeader(
             'Content-Type',
             'application/json'
-        )->withBody(
-            $this->streamFactory->createStream(\json_encode($dataToSend))
         );
+        if ($dataToSend) {
+            $request = $request->withBody(
+                $this->streamFactory->createStream(json_encode($dataToSend))
+            );
+        }
         return $this->client->sendRequest($request);
     }
 }

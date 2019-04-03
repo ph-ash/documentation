@@ -39,7 +39,7 @@ Feature: display monitoring state on a dashboard
 
   Scenario: push multiple monitoring data and delete monitoring data
     Given an empty dashboard
-    When I add some monitorings through the API:
+    When I add some monitorings through the API with errors:
       | id     | property | value                    |
       | bulk 1 | status   | ok                       |
       | bulk 2 | status   | ok                       |
@@ -54,6 +54,11 @@ Feature: display monitoring state on a dashboard
     And I see the monitoring "bulk 3" as a "red" tile
     And I see the monitoring "bulk 5" as a "green" tile
 
+    When I delete the monitoring "bulk 5" through the API
+    Then I see 3 monitoring tiles
+
+    When I delete the monitoring "bulk 3" in the dashboard
+    Then I see 2 monitoring tiles
 
 #  Scenario: idletimeout
 #  Scenario: filled board is navigated up and down (path + color aggregation!) + URL navigation

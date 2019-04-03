@@ -9,6 +9,7 @@ use Behat\Behat\Context\Environment\InitializedContextEnvironment;
 use Behat\Behat\Context\Exception\ContextNotFoundException;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\MinkContext;
+use DMore\ChromeDriver\ChromeDriver;
 use Webmozart\Assert\Assert;
 
 class DashboardContext implements Context
@@ -103,5 +104,18 @@ JS
         $detailView = $page->find('css', 'div.phash-dialog');
         Assert::true($detailView->isVisible());
         Assert::contains($detailView->getText(), $details);
+    }
+
+    /**
+     * @When I delete the monitoring :id in the dashboard
+     */
+    public function iDeleteTheMonitoringInTheDashboard(string $id): void
+    {
+        $this->iClickOnTheMonitoring($id);
+        $this->minkContext->pressButton('Delete');
+        /** @var ChromeDriver $driver */
+        $driver = $this->minkContext->getSession()->getDriver();
+        $driver->acceptAlert();
+        sleep(1);
     }
 }
