@@ -53,8 +53,9 @@ class DashboardContext implements Context
     public function iNavigateTheBrowserTo(string $fragment): void
     {
         $this->minkContext->visit('about:blank'); // this is needed because the driver can currently not handle 'Page.navigatedWithinDocument'
-        $this->minkContext->visitPath(sprintf('/#/Monitoring.%s', rawurlencode($fragment)));
         sleep(1);
+        $this->minkContext->visitPath(sprintf('/#/Monitoring.%s', rawurlencode($fragment)));
+        sleep(3);
     }
 
     /**

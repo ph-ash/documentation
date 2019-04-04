@@ -153,5 +153,5 @@ Feature: display monitoring state on a dashboard
     And I see the monitoring "priority 2" as a "green" tile
     And the monitoring "priority 2" is about "2" times bigger than "priority 1"
 
-    When I wait for 60 seconds
+    When I wait for 70 seconds
     Then the monitoring "priority 1" is about "3" times bigger than "priority 2"
