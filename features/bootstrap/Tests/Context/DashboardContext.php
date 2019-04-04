@@ -158,4 +158,24 @@ JS
         $driver->acceptAlert();
         sleep(1);
     }
+
+    /**
+     * @Then the monitoring :firstMonitoring is about :factor times bigger than :secondMonitoring
+     */
+    public function theMonitoringIsAboutTimesBiggerThan(string $firstMonitoring, float $factor, string $secondMonitoring): void
+    {
+        $firstArea = $this->getArea($firstMonitoring);
+        $secondArea = $this->getArea($secondMonitoring);
+        Assert::range($firstArea, $factor * 0.99 * $secondArea, $factor * 1.01 * $secondArea);
+    }
+
+    private function getArea(string $id): float
+    {
+        return (float) $this->minkContext->getSession()->evaluateScript(
+            sprintf(
+                'return document.getElementById("Monitoring.%1$s").width.baseVal.value * document.getElementById("Monitoring.%1$s").height.baseVal.value;',
+                $id
+            )
+        );
+    }
 }

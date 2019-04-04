@@ -140,4 +140,18 @@ Feature: display monitoring state on a dashboard
     And I see the monitoring "top.middle 1.bottom 2.navigation 3" as a "green" tile
 
 
-#  Scenario: tile expansion (incl. priority)
+  Scenario: push different prioritized monitoring data and growing error tiles
+    Given an empty dashboard
+    When I add some monitorings through the API:
+      | id         | property                      | value |
+      | priority 1 | status                        | error |
+      | priority 1 | tileExpansionGrowthExpression | * 6   |
+      | priority 2 | status                        | ok    |
+      | priority 2 | priority                      | 2     |
+    Then I see 2 monitoring tiles
+    And I see the monitoring "priority 1" as a "red" tile
+    And I see the monitoring "priority 2" as a "green" tile
+    And the monitoring "priority 2" is about "2" times bigger than "priority 1"
+
+    When I wait for 60 seconds
+    Then the monitoring "priority 1" is about "3" times bigger than "priority 2"
