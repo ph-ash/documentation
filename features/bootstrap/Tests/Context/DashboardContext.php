@@ -170,6 +170,16 @@ JS
         Assert::range($firstArea, $factor * 0.99 * $secondArea, $factor * 1.01 * $secondArea);
     }
 
+    /**
+     * @Then the monitoring :firstMonitoring is at least :factor times bigger than :secondMonitoring
+     */
+    public function theMonitoringIsAtLeastTimesBiggerThan(string $firstMonitoring, float $factor, string $secondMonitoring): void
+    {
+        $firstArea = $this->getArea($firstMonitoring);
+        $secondArea = $this->getArea($secondMonitoring);
+        Assert::greaterThanEq($firstArea, $factor * 0.99 * $secondArea);
+    }
+
     private function getArea(string $id): float
     {
         return (float) $this->minkContext->getSession()->evaluateScript(

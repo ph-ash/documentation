@@ -145,7 +145,8 @@ Feature: display monitoring state on a dashboard
     When I add some monitorings through the API:
       | id         | property                      | value |
       | priority 1 | status                        | error |
-      | priority 1 | tileExpansionGrowthExpression | * 6   |
+      | priority 1 | idleTimeoutInSeconds          | 4     |
+      | priority 1 | tileExpansionGrowthExpression | + 5   |
       | priority 2 | status                        | ok    |
       | priority 2 | priority                      | 2     |
     Then I see 2 monitoring tiles
@@ -153,5 +154,5 @@ Feature: display monitoring state on a dashboard
     And I see the monitoring "priority 2" as a "green" tile
     And the monitoring "priority 2" is about "2" times bigger than "priority 1"
 
-    When I wait for 70 seconds
-    Then the monitoring "priority 1" is about "3" times bigger than "priority 2"
+    When I wait for 61 seconds
+    Then the monitoring "priority 1" is at least "3" times bigger than "priority 2"
