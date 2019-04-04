@@ -8,6 +8,10 @@ php:
 services:
   - docker
 
+branches:
+  only:
+    - master
+
 notifications:
   slack:
     rooms:
