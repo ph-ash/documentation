@@ -48,6 +48,16 @@ class DashboardContext implements Context
     }
 
     /**
+     * @When I navigate the browser to :fragment
+     */
+    public function iNavigateTheBrowserTo(string $fragment): void
+    {
+        $this->minkContext->visit('about:blank'); // this is needed because the driver can currently not handle 'Page.navigatedWithinDocument'
+        $this->minkContext->visitPath(sprintf('/#/Monitoring.%s', rawurlencode($fragment)));
+        sleep(1);
+    }
+
+    /**
      * @Given an empty dashboard
      */
     public function anEmptyDashboard(): void
@@ -58,12 +68,11 @@ class DashboardContext implements Context
     }
 
     /**
-     * @Then I see :count monitoring tiles
+     * @Then I see :count monitoring tile/tiles
      */
     public function iSeeMonitoringTiles(int $count): void
     {
-        $count++; // breadcrumb
-        $countedRects = $this->minkContext->getSession()->evaluateScript('return document.getElementsByTagName("rect").length;');
+        $countedRects = $this->minkContext->getSession()->evaluateScript('return Array.from(document.getElementsByTagName("rect")).filter(rect => rect.children.length == 1).length;');
         Assert::eq($countedRects, $count);
     }
 
@@ -85,13 +94,44 @@ class DashboardContext implements Context
      */
     public function iClickOnTheMonitoring(string $id): void
     {
+        $this->clickHTMLElement(sprintf('document.getElementById("Monitoring.%s")', $id));
+    }
+
+    /**
+     * @When I click on the breadcrumb
+     */
+    public function iClickOnTheBreadcrumb(): void
+    {
+        $this->clickBreadcrumb(1);
+    }
+
+    /**
+     * @When I click on the breadcrumb :times times
+     */
+    public function iClickOnTheBreadcrumbTimes(int $times): void
+    {
+        $this->clickBreadcrumb($times);
+    }
+
+    private function clickBreadcrumb(int $times): void
+    {
+        for ($i = 0; $i < $times; $i++) {
+            $this->clickHTMLElement('document.getElementsByClassName("grandparent").item(0).firstElementChild');
+        }
+    }
+
+    private function clickHTMLElement(string $elementExpression): void
+    {
         $this->minkContext->getSession()->executeScript(
-            sprintf(<<<JS
-                const e = document.createEvent("HTMLEvents");
+            <<<JS
+                if (typeof e !== 'undefined') {
+                    var e = null;
+                }
+                e = document.createEvent("HTMLEvents");
                 e.initEvent("click", false, true);
-                document.getElementById("Monitoring.%s").dispatchEvent(e);
+                $elementExpression.dispatchEvent(e);
 JS
-            , $id));
+        );
         sleep(1);
     }
 

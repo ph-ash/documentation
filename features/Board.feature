@@ -14,7 +14,7 @@ Feature: display monitoring state on a dashboard
       | property | value    |
       | id       | single 1 |
       | status   | ok       |
-    Then I see 1 monitoring tiles
+    Then I see 1 monitoring tile
     And I see the monitoring "single 1" as a "green" tile
 
     When I update a monitoring through the API:
@@ -22,7 +22,7 @@ Feature: display monitoring state on a dashboard
       | id       | single 1          |
       | status   | error             |
       | payload  | a helpful message |
-    Then I see 1 monitoring tiles
+    Then I see 1 monitoring tile
     And I see the monitoring "single 1" as a "red" tile
 
     When I add a monitoring through the API:
@@ -68,7 +68,7 @@ Feature: display monitoring state on a dashboard
       | id                   | idle  |
       | status               | ok    |
       | idleTimeoutInSeconds | 5     |
-    Then I see 1 monitoring tiles
+    Then I see 1 monitoring tile
     And I see the monitoring "idle" as a "green" tile
 
     When I wait for 10 seconds
@@ -92,5 +92,52 @@ Feature: display monitoring state on a dashboard
     Then I see the monitoring "idle" as a "red" tile
 
 
-#  Scenario: filled board is navigated up and down (path + color aggregation!) + URL navigation
+  Scenario: navigate the dashboard and URL shortcuts
+    Given an empty dashboard
+    When I add some monitorings through the API:
+      | id           | property | value                 |
+      | navigation 1 | status   | ok                    |
+      | navigation 1 | path     | top.middle 1.bottom 1 |
+      | navigation 2 | status   | error                 |
+      | navigation 2 | path     | top.middle 1.bottom 1 |
+      | navigation 3 | status   | ok                    |
+      | navigation 3 | path     | top.middle 1.bottom 2 |
+      | navigation 4 | status   | ok                    |
+      | navigation 4 | path     | top.middle 2.bottom   |
+    Then I see 1 monitoring tile
+    And I see the monitoring "top" as a "red" tile
+
+    When I click on the monitoring "top"
+    Then I see 2 monitoring tiles
+    And I see the monitoring "top.middle 1" as a "red" tile
+    And I see the monitoring "top.middle 2" as a "green" tile
+
+    When I click on the monitoring "top.middle 2"
+    Then I see 1 monitoring tile
+    And I see the monitoring "top.middle 2.bottom" as a "green" tile
+
+    When I click on the monitoring "top.middle 2.bottom"
+    Then I see 1 monitoring tile
+    And I see the monitoring "top.middle 2.bottom.navigation 4" as a "green" tile
+
+    When I click on the breadcrumb 2 times
+    Then I see 2 monitoring tiles
+    And I see the monitoring "top.middle 1" as a "red" tile
+    And I see the monitoring "top.middle 2" as a "green" tile
+
+    When I click on the monitoring "top.middle 1"
+    Then I see 2 monitoring tiles
+    And I see the monitoring "top.middle 1.bottom 1" as a "red" tile
+    And I see the monitoring "top.middle 1.bottom 2" as a "green" tile
+
+    When I click on the monitoring "top.middle 1.bottom 1"
+    Then I see 2 monitoring tiles
+    And I see the monitoring "top.middle 1.bottom 1.navigation 1" as a "green" tile
+    And I see the monitoring "top.middle 1.bottom 1.navigation 2" as a "red" tile
+
+    When I navigate the browser to "top.middle 1.bottom 2"
+    Then I see 1 monitoring tile
+    And I see the monitoring "top.middle 1.bottom 2.navigation 3" as a "green" tile
+
+
 #  Scenario: tile expansion (incl. priority)
