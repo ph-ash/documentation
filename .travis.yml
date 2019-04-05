@@ -7,3 +7,37 @@ php:
 
 services:
   - docker
+
+branches:
+  only:
+    - master
+
+notifications:
+  slack:
+    rooms:
+      - phash:ZWTgdQdQ9fSlC9nJ3TUY2gjv
+    on_success: change
+    on_failure: always
+
+script:
+  - mkdir screenshots
+  - rm -fr .git/
+  - git clone https://github.com/ph-ash/server.git server
+  - cd server
+  - docker build . -t phashserver
+  - cd ../
+  - git clone https://github.com/ph-ash/board.git board
+  - cd board
+  - docker build . -t phashboard
+  - cd ../
+  - git clone https://github.com/ph-ash/nginx.git nginx
+  - cd nginx
+  - docker build . -t phashnginx
+  - cd ../
+  - docker build . -t phashtests
+  - SCENARIO= docker-compose -f docker-compose.yaml -f docker-compose.test.yaml pull mongo chrome
+  - composer install --ignore-platform-reqs
+  - composer dump-autoload --optimize
+  - docker/runTests.sh
+  - cd screenshots
+  - find . -name "*.png" -exec bash -c 'curl -s -F "file=@{}" https://file.io | jq .link | tr -d "\""' \;

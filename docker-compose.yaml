@@ -12,6 +12,8 @@ services:
     image: phashboard/server:2
     volumes:
       - static-assets-server:/var/www/html/public
+    depends_on:
+      - mongo
     logging:
       driver: none
 
@@ -27,6 +29,9 @@ services:
     volumes:
       - static-assets-board:/var/www/html/board
       - static-assets-server:/var/www/html/server
+    depends_on:
+      - server
+      - board
     logging:
       driver: none
 
