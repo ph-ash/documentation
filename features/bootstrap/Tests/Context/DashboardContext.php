@@ -82,6 +82,7 @@ class DashboardContext implements Context
      */
     public function iSeeTheMonitoringAsATile(string $id, string $status): void
     {
+        sleep(1);
         $style = $this->minkContext->getSession()->evaluateScript(sprintf('return document.getElementById("Monitoring.%s").style.fill;', $id));
         $color = self::COLORS[$status];
         $r = intval(substr($color, 1, 2), 16);
