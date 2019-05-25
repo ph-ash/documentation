@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.1.0
+
+* add version information
+* add regression tests for the application
+* fix delayed redrawing of idle monitorings
+
 ## v2.0.2
 
 * fix to reject pushes into leafs
