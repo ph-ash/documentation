@@ -628,16 +628,16 @@
         },
         {
             "name": "nyholm/psr7",
-            "version": "1.2.0",
+            "version": "1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Nyholm/psr7.git",
-                "reference": "27c828a165ff936f9fe9056baa9cabe0c70a423c"
+                "reference": "55ff6b76573f5b242554c9775792bd59fb52e11c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Nyholm/psr7/zipball/27c828a165ff936f9fe9056baa9cabe0c70a423c",
-                "reference": "27c828a165ff936f9fe9056baa9cabe0c70a423c",
+                "url": "https://api.github.com/repos/Nyholm/psr7/zipball/55ff6b76573f5b242554c9775792bd59fb52e11c",
+                "reference": "55ff6b76573f5b242554c9775792bd59fb52e11c",
                 "shasum": ""
             },
             "require": {
@@ -686,7 +686,7 @@
                 "psr-17",
                 "psr-7"
             ],
-            "time": "2019-08-22T18:22:08+00:00"
+            "time": "2019-09-05T13:24:16+00:00"
         },
         {
             "name": "php-http/httplug",
