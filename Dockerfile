@@ -8,7 +8,7 @@ RUN composer install --ignore-platform-reqs \
 
 # next stage #
 
-FROM docker/compose:1.24.1
+FROM docker/compose:1.25.0
 COPY --from=composer /var/www/html /var/www/html
 WORKDIR /var/www/html
 ENV APP_ENV=prod
