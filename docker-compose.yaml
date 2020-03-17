@@ -21,6 +21,8 @@ services:
     image: mongo:4
     volumes:
       - ./mongodata:/data/db
+    logging:
+      driver: none
 
   nginx:
     image: phashboard/nginx:2
