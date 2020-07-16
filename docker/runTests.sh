@@ -10,7 +10,7 @@ while read SCENARIO; do
     RESULT=$((RESULT + CODE))
     TOTAL=$((TOTAL + 1))
 done << EOF
-$(BEHAT_PARAMS="{\"extensions\":{\"Behat\\\\MinkExtension\":{\"sessions\":{\"default\":{\"chrome\":{\"api_url\":\"dummy\"}}}}}}" vendor/bin/behat --list-scenarios)
+$(BEHAT_PARAMS="{\"extensions\":{\"Behat\\\\MinkExtension\":{\"sessions\":{\"default\":{\"chrome\":{\"api_url\":\"dummy\"}}}}}}" vendor/bin/behat --list-scenarios -s list | sed 's?.*/\(features/.*\)$?\1?g')
 EOF
 
 # shutting down last containers

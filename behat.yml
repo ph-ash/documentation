@@ -8,6 +8,7 @@ default:
         - Tests\Context\DashboardContext: ~
         - Tests\Context\APIContext: ~
         - Behat\MinkExtension\Context\MinkContext: ~
+    list: ~
   extensions:
     Liuggio\Fastest\Behat\ListFeaturesExtension\Extension: ~
     DMore\ChromeExtension\Behat\ServiceContainer\ChromeExtension: ~

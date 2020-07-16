@@ -12,4 +12,4 @@ fi
 echo "testing scenario '${SCENARIO}', starting in a few seconds..."
 
 sleep 5
-vendor/bin/behat ${SCENARIO}
+vendor/bin/behat -s default ${SCENARIO}
