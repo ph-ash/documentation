@@ -1,6 +1,8 @@
 default:
   suites:
     default:
+      paths:
+        - /var/www/html/features
       contexts:
         - Tests\Context\FeatureContext: ~
         - Tests\Context\DashboardContext: ~
