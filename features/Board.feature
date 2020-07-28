@@ -136,6 +136,7 @@ Feature: display monitoring state on a dashboard
     And I see the monitoring "top.middle 1.bottom 1.navigation 2" as a "red" tile
 
     When I navigate the browser to "top.middle 1.bottom 2"
+    And I wait for 10 seconds
     Then I see 1 monitoring tile
     And I see the monitoring "top.middle 1.bottom 2.navigation 3" as a "green" tile
 
