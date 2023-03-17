@@ -1,3 +1,7 @@
+# Archive notice
+
+## The development team around [ph-ash](https://github.com/ph-ash) has stopped working on the project for over a year, and is not going to continue working on it anymore. The repositories will stay as public archives for some time, but in the long run, the organization is going to be deleted. Feel free to fork and copy whatever you like from the repositories.
+
 # Phash documentation
 
 PHP monitoring dashboard documentation
